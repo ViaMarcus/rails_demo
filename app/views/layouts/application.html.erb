@@ -10,8 +10,10 @@
   </head>
 
   <body>
-    <% if flash[:notice] %>
+    <% render 'layouts/nav' %>
+    <% if (flash[:notice] || flash[:alert]) %>
     <%= flash[:notice] %>
+    <%= flash[:alert] %>
     <% end %>
     <%= yield %>
   </body>

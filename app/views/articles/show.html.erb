@@ -1,3 +1,4 @@
 <p><%= link_to "<- Back to list", root_path %> </p>
 <p> <%= @article.title %> </p>
+<p>Author: <i> <%= @article.author || "Anonymous" %> </i> </p>
 <p> <%= @article.content %> </p>

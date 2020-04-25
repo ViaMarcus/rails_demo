@@ -8,11 +8,13 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    
+    if !user_signed_in?
+      redirect_to new_user_session_path
+    end
   end
 
   def create
-    @article = Article.create(params.require(:article).permit(:title, :content))
+    @article = Article.create(params.require(:article).permit(:title, :content, :author))
     if @article.persisted?
       redirect_to @article
       flash[:notice] = "Article was successfully created"

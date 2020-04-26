@@ -1,0 +1,19 @@
+<p><%= link_to "<- Back to list", root_path %> </p>
+<h3>Editing '<%= @article.title %>'</h3>
+
+<%= form_for :article, url: articles_path, local: true do |form| %>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+ 
+  <p>
+    <%= form.label :content %><br>
+    <%= form.text_area :content %>
+  </p>
+
+  <%= form.hidden_field :author, :value => current_user.username %>
+  <p>
+    <%=  form.submit "Update Article" %>
+  </p>
+<% end %>

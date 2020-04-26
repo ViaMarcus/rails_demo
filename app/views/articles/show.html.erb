@@ -1,4 +1,9 @@
 <p><%= link_to "<- Back to list", root_path %> </p>
+<% if user_signed_in? && @article.author == current_user.username %>
+<nav>
+    <a> <%= link_to "Edit Article", edit_article_path( @article ) %> </a>
+</nav>
+<% end %>
 <p> <%= @article.title %> </p>
 <p>Author: <i> <%= @article.author || "Anonymous" %> </i> </p>
 <p> <%= @article.content %> </p>

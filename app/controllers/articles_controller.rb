@@ -1,4 +1,6 @@
 class ArticlesController < ApplicationController
+  before_action :authenticate_user!, except: [ :index, :show ]
+
   def index
     @articles = Article.all
   end
@@ -8,9 +10,14 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    if !user_signed_in?
-      redirect_to new_user_session_path
-    end
+
+  end
+
+  def edit
+    @article = Article.find(params[:id])
+  end
+
+  def destroy
   end
 
   def create

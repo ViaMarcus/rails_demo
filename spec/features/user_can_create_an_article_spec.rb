@@ -1,5 +1,6 @@
 feature 'User can create articles' do
     let(:user) { FactoryBot.create(:user) }
+    let(:user2) { FactoryBot.create(:user, username: "Bart", password: "Eatmyshorts") }
 
     before do
         login_as( user, scope: :user)
@@ -33,6 +34,19 @@ feature 'User can create articles' do
 
         it 'user should be author of article' do
             expect(page).to have_content "Author: #{ user.username }"
+        end
+
+        it 'user can edit its own articles' do
+            click_on "Edit Article"
+            expect(page).to have_content "Editing 'Happy Holidays'"
+        end
+
+        it 'user cannot edit someone elses article' do
+            logout
+            login_as(user2, scope: :user)
+            article = Article.find_by(title: 'Happy Holidays')
+            visit article_path(article)
+            expect(page).to_not have_content "Edit Article"
         end
     end
 

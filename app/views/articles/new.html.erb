@@ -10,7 +10,8 @@
     <%= form.label :content %><br>
     <%= form.text_area :content %>
   </p>
- 
+
+  <%= form.hidden_field :author, :value => current_user.username %>
   <p>
     <%=  form.submit "Create Article" %>
   </p>

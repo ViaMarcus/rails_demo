@@ -10,6 +10,7 @@
             <a><%= link_to "Sign up", new_user_registration_path %></a> |
             <a><%= link_to "Log in", new_user_session_path %></a> |
         <% else %>
+            <a><%= link_to "Edit account", edit_user_registration_path %> |
             <a><%= link_to "Log out", destroy_user_session_path, method: :delete %> </a>
         <% end %>
     </nav>

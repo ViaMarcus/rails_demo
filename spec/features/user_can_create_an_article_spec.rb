@@ -1,5 +1,9 @@
 feature 'User can create articles' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:user2) { FactoryBot.create(:user, username: "Bart", password: "Eatmyshorts") }
+
     before do
+        login_as( user, scope: :user)
         visit root_path
         click_on "New Article"
     end
@@ -27,6 +31,46 @@ feature 'User can create articles' do
         it 'user should see article content' do
             expect(page).to have_content 'Buy your gifts now!'
         end
+
+        it 'user should be author of article' do
+            expect(page).to have_content "Author: #{ user.username }"
+        end
+    
+        describe 'user can edit the article' do
+            it 'user can edit its own articles' do
+                click_on "Edit Article"
+                expect(page).to have_content "Editing 'Happy Holidays'"
+            end
+
+            it 'updates are reflected in the article' do
+                click_on "Edit Article"
+                fill_in "Title", with: "Holidays are capitalist tricks"
+                click_on "Update Article"
+                article = Article.find_by(content: 'Buy your gifts now!')
+                visit article_path(article)
+                expect(page).to have_content "Holidays are capitalist tricks"
+            end
+
+            it 'user cannot edit someone elses article' do
+                logout
+                login_as(user2, scope: :user)
+                article = Article.find_by(title: 'Happy Holidays')
+                visit article_path(article)
+                expect(page).to_not have_content "Edit Article"
+            end
+        end
+
+        describe 'user can delete its own articles' do
+            before do
+                click_on "Edit Article"
+                click_on "Delete Article"
+            end
+
+            it 'no longer exists' do
+                visit root_path
+                expect(page).to_not have_content "Happy Holidays"
+            end
+        end
     end
 
     context "User doesn't enter a title for the article" do
@@ -48,6 +92,17 @@ feature 'User can create articles' do
 
         it "user should see an error message" do
             expect(page).to have_content "Content can't be empty"
+        end
+    end
+
+    context "User is not logged in" do
+        before do
+            logout
+            visit new_article_path
+        end
+
+        it 'redirects user' do
+            expect(page).to have_content "Remember"
         end
     end
 end

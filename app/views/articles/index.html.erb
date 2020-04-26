@@ -1,10 +1,9 @@
-<p><%= link_to "New Article", new_article_path %></p>
+<% if signed_in? %>
+<p><%= button_to "New Article", new_article_path, method: :get, class: "btn good" %></p>
+<% end %>
 
-
-<ul>
     <% @articles.each do |article| %>
-    <li>
+    <div class="articlelink">
         <%= link_to article.title, article_path( article )%> by <%= article.author || "Anonymous" %> <br />
-    </li>
+    </div>
     <% end %>
-</ul>

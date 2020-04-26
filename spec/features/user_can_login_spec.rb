@@ -13,7 +13,7 @@ feature 'User can login' do
         end
 
         it 'shows welcome message' do
-            expect(page).to have_content "Welcome, #{user.username}"
+            expect(page).to have_content "Profile: #{user.username}"
         end
 
         it 'user can log out' do

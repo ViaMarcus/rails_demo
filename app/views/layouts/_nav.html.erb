@@ -1,17 +1,16 @@
 <header>
-    <% if user_signed_in? %>
-        <h3><%= "Welcome, #{ current_user.username }" %></h3>
-    <% else %>
-        <h3><%= "Welcome to Planket!" %> </h3>
-    <% end %>
+    <%= image_tag  "planket_logo_pos.png", class: "logo"%>
     <nav>
-        <a><%= link_to "Planket Home", root_path %></a> | 
+        <%= link_to "Planket Home", root_path, class: "navlink" %>
+        <div id="account">
         <% if !user_signed_in? %>
-            <a><%= link_to "Sign up", new_user_registration_path %></a> |
-            <a><%= link_to "Log in", new_user_session_path %></a> |
+            <a><%= link_to "Sign up", new_user_registration_path, class: "navlink"%></a>
+            <a><%= link_to "Log in", new_user_session_path, class: "navlink" %></a>
         <% else %>
-            <a><%= link_to "Edit account", edit_user_registration_path %> |
-            <a><%= link_to "Log out", destroy_user_session_path, method: :delete %> </a>
+            <a><%= link_to "Profile: #{current_user.username }", "/users/#{ current_user.username }"%>
+            <a><%= link_to "Edit account", edit_user_registration_path, class: "navlink" %>
+            <a><%= link_to "Log out", destroy_user_session_path, method: :delete, class: "navlink" %> </a>
         <% end %>
+        <div>
     </nav>
 </header>

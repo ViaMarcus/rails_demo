@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :authenticate_user!, except: [ :index, :show, :user ]
 
   def index
     @articles = Article.all
@@ -7,6 +7,11 @@ class ArticlesController < ApplicationController
 
   def show
     @article = Article.find(params[:id])
+  end
+
+  def user
+    @user = User.find_by username: params[:username]
+    @articles = Article.where("author = ?", params[:username])
   end
 
   def new

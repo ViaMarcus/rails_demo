@@ -1,0 +1,5 @@
+    <% @articles.each do |article| %>
+    <div class="articlelink">
+        <%= link_to article.title, article_path( article )%> by <%= link_to article.author, "/users/#{article.author}" %> <br />
+    </div>
+    <% end %>

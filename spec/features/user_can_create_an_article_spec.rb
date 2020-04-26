@@ -35,18 +35,41 @@ feature 'User can create articles' do
         it 'user should be author of article' do
             expect(page).to have_content "Author: #{ user.username }"
         end
+    
+        describe 'user can edit the article' do
+            it 'user can edit its own articles' do
+                click_on "Edit Article"
+                expect(page).to have_content "Editing 'Happy Holidays'"
+            end
 
-        it 'user can edit its own articles' do
-            click_on "Edit Article"
-            expect(page).to have_content "Editing 'Happy Holidays'"
+            it 'updates are reflected in the article' do
+                click_on "Edit Article"
+                fill_in "Title", with: "Holidays are capitalist tricks"
+                click_on "Update Article"
+                article = Article.find_by(content: 'Buy your gifts now!')
+                visit article_path(article)
+                expect(page).to have_content "Holidays are capitalist tricks"
+            end
+
+            it 'user cannot edit someone elses article' do
+                logout
+                login_as(user2, scope: :user)
+                article = Article.find_by(title: 'Happy Holidays')
+                visit article_path(article)
+                expect(page).to_not have_content "Edit Article"
+            end
         end
 
-        it 'user cannot edit someone elses article' do
-            logout
-            login_as(user2, scope: :user)
-            article = Article.find_by(title: 'Happy Holidays')
-            visit article_path(article)
-            expect(page).to_not have_content "Edit Article"
+        describe 'user can delete its own articles' do
+            before do
+                click_on "Edit Article"
+                click_on "Delete Article"
+            end
+
+            it 'no longer exists' do
+                visit root_path
+                expect(page).to_not have_content "Happy Holidays"
+            end
         end
     end
 

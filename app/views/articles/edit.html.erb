@@ -1,7 +1,8 @@
 <p><%= link_to "<- Back to list", root_path %> </p>
 <h3>Editing '<%= @article.title %>'</h3>
+<p> <%= button_to "Delete Article", article_path( @article ), data: { confirm: "Are you sure?" }, method: :delete %></p>
 
-<%= form_for :article, url: articles_path, local: true do |form| %>
+<%= form_for :article, url: article_path( @article ), html: { method: :put }, local: true do |form| %>
   <p>
     <%= form.label :title %><br>
     <%= form.text_field :title %>

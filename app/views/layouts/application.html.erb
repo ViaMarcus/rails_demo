@@ -11,9 +11,13 @@
 
   <body>
     <%= render 'layouts/nav' %>
-    <% if (flash[:notice] || flash[:alert]) %>
-    <%= flash[:notice] %>
-    <%= flash[:alert] %>
+  
+
+
+
+
+    <% flash.each do |key, value| %>
+    <%= content_tag(:a, value, class: key)%>
     <% end %>
     <div id="content">
       <%= yield %>

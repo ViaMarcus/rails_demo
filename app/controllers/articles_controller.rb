@@ -32,6 +32,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     @article.destroy
     redirect_to root_path
+    flash[:notice] = "Article was deleted"
   end
 
   def create
@@ -40,7 +41,7 @@ class ArticlesController < ApplicationController
       redirect_to @article
       flash[:notice] = "Article was successfully created"
     else
-      flash[:notice] = "Title can't be blank and Content can't be empty"
+      flash[:alert] = "Title can't be blank and Content can't be empty"
       render "new"
     end
 
